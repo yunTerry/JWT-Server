@@ -12,4 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  ***/
 
 public interface PwdDao extends JpaRepository<Pswd,String> {
+
+    Pswd findByUsername(String name);
 }
