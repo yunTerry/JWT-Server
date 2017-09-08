@@ -1,5 +1,10 @@
 package com.terry;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /***
  * *
  * 名称：     User.
@@ -9,8 +14,11 @@ package com.terry;
  * *
  ***/
 
+@Entity
 public class User {
 
+    @Id
+    @GenericGenerator(name = "id", strategy = "assigned")
     public String id;
     public String name, sex;
     public int age;

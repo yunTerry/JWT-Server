@@ -27,7 +27,30 @@ public class JwtServerApplication {
                @RequestParam("pwd") String pwd) {
         Back back = new Back();
         Pswd rpwd = pwdDao.findByUsername(name);
-        if (rpwd != null && rpwd.pwd.equals(pwd)) {
+        if (rpwd == null) {
+            try {
+                Pswd np = new Pswd();
+                np.username = name;
+                np.pwd = pwd;
+                np = pwdDao.save(np);
+                User user = new User();
+                user.id = np.id;
+                user.name = np.username;
+                user.age = 20;
+                user.sex = "girl";
+                userDAO.save(user);
+                String compactJws = Jwts.builder()
+                        .claim("role", "admin")
+                        .setSubject(np.id)
+                        .signWith(SignatureAlgorithm.HS512, key)
+                        .compact();
+                back.data = compactJws;
+            } catch (Exception e) {
+                back.code = 300;
+                back.msg = "login failed";
+                return back;
+            }
+        } else if (rpwd.pwd.equals(pwd)) {
             back.code = 200;
             back.msg = "login success";
             String compactJws = Jwts.builder()
@@ -37,7 +60,7 @@ public class JwtServerApplication {
                     .compact();
             back.data = compactJws;
         } else {
-            back.code = 300;
+            back.code = 400;
             back.msg = "login failed";
         }
         return back;
@@ -47,14 +70,14 @@ public class JwtServerApplication {
     UserDAO userDAO;
 
     @GetMapping("/user")
-    Back getUser(@RequestHeader("jwt") String token){
+    Back getUser(@RequestHeader("jwt") String token) {
         Back back = new Back();
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(key)
                     .parseClaimsJws(token);
             back.code = 200;
-            String id= claims.getBody().getSubject();
+            String id = claims.getBody().getSubject();
             back.msg = id;
             back.data = userDAO.findOne(id);
         } catch (Exception e) {
