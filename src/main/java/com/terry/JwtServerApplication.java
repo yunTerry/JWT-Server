@@ -39,12 +39,11 @@ public class JwtServerApplication {
                 user.age = 20;
                 user.sex = "girl";
                 userDAO.save(user);
-                String compactJws = Jwts.builder()
+                back.data = Jwts.builder()
                         .claim("role", "admin")
                         .setSubject(np.id)
                         .signWith(SignatureAlgorithm.HS512, key)
                         .compact();
-                back.data = compactJws;
             } catch (Exception e) {
                 back.code = 300;
                 back.msg = "login failed";
@@ -53,12 +52,11 @@ public class JwtServerApplication {
         } else if (rpwd.pwd.equals(pwd)) {
             back.code = 200;
             back.msg = "login success";
-            String compactJws = Jwts.builder()
+            back.data = Jwts.builder()
                     .claim("role", "admin")
                     .setSubject(rpwd.id)
                     .signWith(SignatureAlgorithm.HS512, key)
                     .compact();
-            back.data = compactJws;
         } else {
             back.code = 400;
             back.msg = "login failed";
