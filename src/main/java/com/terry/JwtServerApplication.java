@@ -39,6 +39,8 @@ public class JwtServerApplication {
                 user.age = 20;
                 user.sex = "girl";
                 userDAO.save(user);
+                back.code = 200;
+                back.msg = "sign up success";
                 back.data = Jwts.builder()
                         .claim("role", "admin")
                         .setSubject(np.id)
@@ -46,7 +48,7 @@ public class JwtServerApplication {
                         .compact();
             } catch (Exception e) {
                 back.code = 300;
-                back.msg = "login failed";
+                back.msg = e.getMessage();
                 return back;
             }
         } else if (rpwd.pwd.equals(pwd)) {
@@ -76,7 +78,7 @@ public class JwtServerApplication {
                     .parseClaimsJws(token);
             back.code = 200;
             String id = claims.getBody().getSubject();
-            back.msg = id;
+            back.msg = "get success";
             back.data = userDAO.findOne(id);
         } catch (Exception e) {
             back.code = 400;
