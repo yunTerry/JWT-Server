@@ -18,9 +18,15 @@ Back login(@RequestParam("name") String name,
 Back getUser(@RequestHeader("jwt") String token);
 ```
 
-+ 登录接口提交用户名密码，返回jwt令牌
++ 登录接口提交用户名密码，服务端返回jwt令牌，如：
+
+`
+eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiYWRtaW4iLCJzdWIiOiI4YWFkYjYwMDVlNzU2YWE5MDE1ZTc1NzViYWRmMDAwMSJ9.Mr0KGzbeeFlFpSTuncku7smPuyx3KBz9SNLlgTIoe5qo10iSe_pdndBdKAX0gMoplMPGyG0eSoS_c0lpnEKOkA
+`
 
 + 用户信息接口客户端将token放在请求头，服务端校验通过即返回用户信息
+
++ 服务端无需存储jwt令牌，通过特定的算法和秘钥校验token，减少不必要的数据库查询
 
 ## 客户端代码：
 
