@@ -20,25 +20,25 @@ public class JwtServerApplication {
     String key = "23ddsshgdf@$";
 
     @Autowired
-    PwdDao pwdDao;
+    PwdRepository pwdRepository;
 
     @PostMapping("/login")
     Back login(@RequestParam("name") String name,
                @RequestParam("pwd") String pwd) {
         Back back = new Back();
-        Pswd rpwd = pwdDao.findByUsername(name);
+        Pswd rpwd = pwdRepository.findByUsername(name);
         if (rpwd == null) {
             try {
                 Pswd np = new Pswd();
                 np.username = name;
                 np.pwd = pwd;
-                np = pwdDao.save(np);
+                np = pwdRepository.save(np);
                 User user = new User();
                 user.id = np.id;
                 user.name = np.username;
                 user.age = 20;
                 user.sex = "girl";
-                userDAO.save(user);
+                userRepository.save(user);
                 back.code = 200;
                 back.msg = "sign up success";
                 back.data = Jwts.builder()
@@ -67,7 +67,7 @@ public class JwtServerApplication {
     }
 
     @Autowired
-    UserDAO userDAO;
+    UserRepository userRepository;
 
     @GetMapping("/user")
     Back getUser(@RequestHeader("jwt") String token) {
@@ -79,7 +79,7 @@ public class JwtServerApplication {
             back.code = 200;
             String id = claims.getBody().getSubject();
             back.msg = "get success";
-            back.data = userDAO.findOne(id);
+            back.data = userRepository.findOne(id);
         } catch (Exception e) {
             back.code = 400;
             back.msg = "JWT Incorrect";
