@@ -21,14 +21,16 @@ Back getUser(@RequestHeader("jwt") String token);
 + 登录接口：客户端提交用户名密码，服务端返回jwt令牌，如：
 
 `
-eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiYWRtaW4iLCJzdWIiOiI4YWFkYjYwMDVlNzU2YWE5MDE1ZTc1NzViYWRmMDAwMSJ9.Mr0KGzbeeFlFpSTuncku7smPuyx3KBz9SNLlgTIoe5qo10iSe_pdndBdKAX0gMoplMPGyG0eSoS_c0lpnEKOkA
+eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiYWRtaW4iLCJzdWIiOiI0MDI4Yjg4MTVmN2I0MmQxMDE1ZjdiNDQ4ZTZjMDAwMCIsImV4cCI6MTUxMDQ2NjEyMn0.U3UOe8Jc6HLE3hw8r6BSus8mr2q1mguo3jiFsLkvRf5jsNX2ibZzmJSVgGUmanNSN05Jrv6ZiBMmVbo-R5TYbg
 `
 
 + 用户信息接口：客户端将token放在请求头，服务端校验通过即返回用户信息
 
 + 服务端无需存储jwt令牌，通过特定的算法和密钥校验token，同时取出Payload中携带的用户ID，减少不必要的数据库查询
 
-+ 为了安全起见，实际开发中要做token注销和过期处理
++ 服务端会自动校验token是否过期，本例中设置jwt有效期为10天
+
++ jwt存在一个设计缺陷——服务端无法主动注销token，所以安全性上不及session，实际开发中谨慎使用
 
 ## 客户端代码：
 
