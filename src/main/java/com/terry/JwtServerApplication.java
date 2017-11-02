@@ -9,6 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @RestController
 @SpringBootApplication
 public class JwtServerApplication {
@@ -28,6 +31,7 @@ public class JwtServerApplication {
         Back back = new Back();
         Pswd rpwd = pwdRepository.findByUsername(name);
         if (rpwd == null) {
+            //新用户自动注册
             try {
                 Pswd np = new Pswd();
                 np.username = name;
@@ -44,6 +48,8 @@ public class JwtServerApplication {
                 back.data = Jwts.builder()
                         .claim("role", "admin")
                         .setSubject(np.id)
+                        //token有效期10天
+                        .setExpiration(getExdate(10))
                         .signWith(SignatureAlgorithm.HS512, key)
                         .compact();
             } catch (Exception e) {
@@ -52,11 +58,13 @@ public class JwtServerApplication {
                 return back;
             }
         } else if (rpwd.pwd.equals(pwd)) {
+            //老用户直接登录
             back.code = 200;
             back.msg = "login success";
             back.data = Jwts.builder()
                     .claim("role", "admin")
                     .setSubject(rpwd.id)
+                    .setExpiration(getExdate(10))
                     .signWith(SignatureAlgorithm.HS512, key)
                     .compact();
         } else {
@@ -82,8 +90,14 @@ public class JwtServerApplication {
             back.data = userRepository.findOne(id);
         } catch (Exception e) {
             back.code = 400;
-            back.msg = "JWT Incorrect";
+            back.msg = e.toString();
         }
         return back;
+    }
+
+    Date getExdate(int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, day);
+        return calendar.getTime();
     }
 }
