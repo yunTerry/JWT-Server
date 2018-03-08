@@ -1,4 +1,4 @@
-package com.terry;
+package com.terry.Bean;
 
 import org.hibernate.annotations.GenericGenerator;
 

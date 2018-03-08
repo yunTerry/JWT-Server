@@ -1,4 +1,4 @@
-package com.terry;
+package com.terry.Bean;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,8 +20,8 @@ public class Pswd {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     public String id;
-    public String username,pwd;
+    public String username, pwd;
 
 }

@@ -1,5 +1,6 @@
-package com.terry;
+package com.terry.Repository;
 
+import com.terry.Bean.Pswd;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /***
@@ -11,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * *
  ***/
 
-public interface PwdRepository extends JpaRepository<Pswd,String> {
+public interface PwdRepository extends JpaRepository<Pswd, String> {
 
     Pswd findByUsername(String name);
 }

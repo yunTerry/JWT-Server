@@ -1,5 +1,6 @@
-package com.terry;
+package com.terry.Repository;
 
+import com.terry.Bean.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /***

@@ -1,4 +1,4 @@
-package com.terry;
+package com.terry.Bean;
 
 /***
  * *
@@ -9,10 +9,10 @@ package com.terry;
  * *
  ***/
 
-public class Back<T> {
+public class BaseBack {
 
     public int code;
     public String msg;
-    public T data;
+    public Object data;
 
 }
