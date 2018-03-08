@@ -31,7 +31,7 @@ public class UserController {
         return userService.getUserInfo(jwt);
     }
 
-    @GetMapping("/userlist")
+    @GetMapping("/user/list")
     BaseBack getUserList(@RequestHeader String jwt) {
         return userService.getUserList();
     }

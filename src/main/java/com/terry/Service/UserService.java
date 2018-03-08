@@ -41,21 +41,21 @@ public class UserService {
                 user.age = 20;
                 user.sex = "girl";
                 userRepository.save(user);
-                back.code = 200;
+                back.code = 0;
                 back.msg = "sign up success";
                 back.data = Util.getToken(np.id);
             } catch (Exception e) {
-                back.code = 300;
+                back.code = 3;
                 back.msg = e.getMessage();
                 return back;
             }
         } else if (rpwd.pwd.equals(pwd)) {
             //老用户直接登录
-            back.code = 200;
+            back.code = 0;
             back.msg = "login success";
             back.data = Util.getToken(rpwd.id);
         } else {
-            back.code = 400;
+            back.code = 4;
             back.msg = "login failed";
         }
         return back;
@@ -64,7 +64,7 @@ public class UserService {
     public BaseBack getUserInfo(String token) {
         BaseBack back = new BaseBack();
         String id = Util.getUid(token);
-        back.code = 200;
+        back.code = 0;
         back.msg = "get success";
         back.data = userRepository.findOne(id);
         return back;
@@ -72,7 +72,7 @@ public class UserService {
 
     public BaseBack getUserList() {
         BaseBack back = new BaseBack();
-        back.code = 200;
+        back.code = 0;
         back.msg = "get success";
         back.data = userRepository.findAll();
         return back;
