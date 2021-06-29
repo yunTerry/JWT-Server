@@ -3,8 +3,9 @@ package com.terry.Service;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.security.Keys;
 
+import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,14 +14,14 @@ import java.util.Date;
  * 名称：     Util
  * 作者：     Terry
  * 创建时间：  on 2018/1/30.
- * 说明：     
+ * 说明：
  * *
  ***/
 
 public class Util {
 
 
-    public static String key = "123d@$";
+    public static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 
     public static String getToken(String id) {
@@ -30,7 +31,7 @@ public class Util {
                     .setSubject(id)
                     //token有效期3天
                     .setExpiration(getExdate(3))
-                    .signWith(SignatureAlgorithm.HS512, Util.key)
+                    .signWith(Util.key)
                     .compact();
         } catch (Exception exception) {
             return null;
@@ -48,18 +49,18 @@ public class Util {
             throw new JwtException("token lost");
         }
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException e) {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        } catch (JwtException e) {
             return false;
         }
+        return true;
     }
 
     public static String getUid(String token) {
         try {
-            return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
                     .getBody().getSubject();
-        } catch (SignatureException e) {
+        } catch (JwtException e) {
             return "";
         }
     }

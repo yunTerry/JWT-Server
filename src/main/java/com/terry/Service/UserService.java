@@ -66,7 +66,7 @@ public class UserService {
         String id = Util.getUid(token);
         back.code = 0;
         back.msg = "get success";
-        back.data = userRepository.findOne(id);
+        back.data = userRepository.findById(id).get();
         return back;
     }
 
